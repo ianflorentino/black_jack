@@ -4,6 +4,9 @@ require 'pry'
 
 set :sessions, true
 
+BLACKJACK_AMOUNT = 21
+DEALER_HIT = 17
+
 helpers do
   def total(user)
    total = 0
@@ -112,7 +115,7 @@ get '/game' do
   session[:player_cards] << session[:deck].pop
   session[:dealer_cards] << session[:deck].pop
 
-  if total(session[:player_cards]) == 21
+  if total(session[:player_cards]) == BLACKJACK_AMOUNT
     session[:chips] += session[:bet]
     winner!("#{session[:player_name]} hit BLACKJACK!")
   end
@@ -122,9 +125,9 @@ end
 
 post '/game/player/hit' do
   session[:player_cards] << session[:deck].pop
-  if total(session[:player_cards]) > 21 
+  if total(session[:player_cards]) > BLACKJACK_AMOUNT 
     redirect '/game/compare'
-  elsif total(session[:player_cards]) == 21
+  elsif total(session[:player_cards]) == BLACKJACK_AMOUNT
     redirect '/game/dealer'
   end
     erb :game, layout:false
@@ -137,7 +140,7 @@ end
 get '/game/dealer' do
   @show_btn = false
   @show_dealer = true
-  if total(session[:dealer_cards]) > 16
+  if total(session[:dealer_cards]) >= DEALER_HIT
     @show_dealer = false
     redirect '/game/compare'
   end
@@ -151,15 +154,15 @@ post '/game/dealer' do
 end
 
 get '/game/compare' do
-  if total(session[:player_cards]) > 21
+  if total(session[:player_cards]) > BLACKJACK_AMOUNT
     session[:chips] -= session[:bet]
     loser!(" #{session[:player_name]} has busted!")
   elsif total(session[:dealer_cards]) == total(session[:player_cards])
     push!("Push")
-  elsif total(session[:dealer_cards]) == 21 && total(session[:player_cards]) != 21
+  elsif total(session[:dealer_cards]) == BLACKJACK_AMOUNT && total(session[:player_cards]) != BLACKJACK_AMOUNT
     session[:chips] -= session[:bet]
     loser!(" Dealer hit Blackjack.")
-  elsif total(session[:dealer_cards]) > 21
+  elsif total(session[:dealer_cards]) > BLACKJACK_AMOUNT
     session[:chips] += session[:bet]
     winner!(" Dealer busted!")
   else
@@ -171,7 +174,8 @@ get '/game/compare' do
       winner!("")
     end
   end
-  erb :game
+  erb :game, layout:false
+end
 
 get '/game/done' do
   erb :game_done
