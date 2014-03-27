@@ -1,0 +1,15 @@
+<h2>Welcome to Blackjack <%= session[:player_name] %>!</h2>
+
+<h5>You have $<%= session[:chips] %>, how much do you want to bet?</h5>
+<form id="bet_btn" action='/game/bet' method='post'>
+  <input type='text' name='chip_count'/>
+  <input type='submit' value='Place Bet' class='btn'/>
+</form>
+<div class="well">
+  <h4>Dealer is showing a:</h4>
+    <img src="/images/cards/cover.jpg" height=200px width=80px>
+    <img src="/images/cards/cover.jpg" height=200px width=80px>
+   <h4>Your Cards are:</h4>
+    <img src="/images/cards/cover.jpg" height=200px width=80px>
+    <img src="/images/cards/cover.jpg" height=200px width=80px>
+</div>

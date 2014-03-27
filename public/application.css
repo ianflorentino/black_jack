@@ -1,0 +1,26 @@
+form#hit_btn {
+  float: left;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+form#stay {
+  float:left;
+}
+
+form#play {
+  float: left;
+  margin-right: 5px;
+}
+
+form#no {
+  float: left;
+}
+
+img.cards {
+  margin: 0px 5px 5px 0px;
+}
+
+.well {
+  background-color: #007f00;
+}
